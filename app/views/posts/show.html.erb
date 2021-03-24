@@ -1,1 +1,35 @@
+The title, categories, and content of the post. All of the comments associated 
+with the post. A list of all the unique users who have commented on the post. 
+A user's name should only show up once in this section, even if they've commented 
+multiple times. A form to add a new comment. The form should have a drop-down menu 
+to select a user (we'll change this in future lessons to automatically associate the 
+comment with a logged-in user). We should also be able to create a new user here and 
+automatically associate it with the post. To associate a new comment with a post, 
+you'll have to use a hidden field:
+<--! %= f.hidden_field :post_id, value: @post.id % -->
 
+<br><hr>
+<h1> <%= @post.title %> </h1>
+<h6> Categories: <% @post.post_categories.each do |pc| %>
+    <%= link_to pc.category.name, category_path(pc.category) %>
+    <%end%>
+</h6>
+<h3> <%= @post.content %> </h3>
+<br><hr>
+<h5> <%= @post.uniq_users.join(" ")%> commented on this. <h5>
+
+    
+
+<h5> comments: </h5>
+<dl>
+    <% @post.comments.each do |com| %>
+       <dt> <%= link_to com.user.username, user_path(com.user) %> </dt> <dd> <%= com.content %> </dd>
+    <%end%>
+</dl>
+
+<%= form_for @comment do |f| %>
+    <%= f.label "Comment" %>
+    <%= f.text_field :content %>
+    <%= f.submit "post commment" %>
+<%end%>
+        

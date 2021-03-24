@@ -1,1 +1,27 @@
+Create a form at posts#new to create a new post. The form should include check boxes
+for us to select categories as well as a text field to create a new category. You 
+should do this with a nested form so that our controller stays thin. Also, typing in 
+a Category name that already exists should not create a new category. Instead, if we 
+type in a category that already exists, we should select it from the database and 
+associate the post we've created with the existing category.
 
+When creating new comments, we should only create a new user if they filled in that 
+input. accepts_nested_attributes_for has a reject_if option that you can configure 
+to only create new records if all the fields aren't blank.
+
+
+
+Also, the select box that we use for the users needs to have a blank option –– check 
+out the include_blank option for collection_select.
+
+<%= form_for @post do |f| %>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+    <%= f.label :content %>
+    <%= f.text_field :content %>
+    <%= f.collection_check_boxes :categoy_ids, Category.all, :id, :name %>
+    <%= f.fields_for :categories, post.categories.build do |c| %>
+        <%= c.text_field :name %>
+    <%end%>
+    <%= f.submit %>
+<%end%>

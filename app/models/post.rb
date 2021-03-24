@@ -3,6 +3,18 @@ class Post < ActiveRecord::Base
   has_many :categories, through: :post_categories
   has_many :comments
   has_many :users, through: :comments
+  accepts_nested_attributes_for :categories
 
+  def category_ids=(ids)
+    ids.each do |id|
+      category = Category.find(id)
+      self.categories << category
+    end
+  end
+
+  
+  def uniq_users
+    self.comments.map{|com| com.user.username}.uniq
+  end
 
 end
